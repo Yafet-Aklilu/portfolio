@@ -19,67 +19,52 @@ function mascotSize() {
   return window.matchMedia("(max-width: 639px)").matches ? 88 : 100;
 }
 
-function parkCorner(size: number): Spot {
-  const pad = window.innerWidth < 640 ? 12 : 24;
-  return {
-    x: Math.max(pad, window.innerWidth - size - pad),
-    y: Math.max(pad, window.innerHeight - size - pad),
-    rotation: 0,
-  };
-}
-
-/** Random viewport spot in safe margins (not tied to page scroll height). */
-function randomSpot(size: number, avoid: Spot | null): Spot {
+function bounds(size: number) {
   const w = window.innerWidth;
   const h = window.innerHeight;
   const pad = w < 640 ? 10 : 18;
-  const maxX = Math.max(pad, w - size - pad);
-  const maxY = Math.max(pad, h - size - pad);
-  const mobile = w < 768;
-
-  let x = pad;
-  let y = pad;
-
-  if (mobile) {
-    // Prefer the right third so content stays readable
-    const band = Math.floor(Math.random() * 3);
-    x = maxX - Math.random() * Math.min(36, maxX * 0.12);
-    if (band === 0) y = pad + Math.random() * (h * 0.28);
-    else if (band === 1) y = h * 0.35 + Math.random() * (h * 0.25);
-    else y = h * 0.62 + Math.random() * Math.max(20, maxY - h * 0.62);
-  } else {
-    const edge = Math.floor(Math.random() * 4);
-    if (edge === 0) {
-      x = pad + Math.random() * Math.max(1, maxX - pad);
-      y = pad + Math.random() * Math.min(h * 0.22, 140);
-    } else if (edge === 1) {
-      x = pad + Math.random() * Math.max(1, maxX - pad);
-      y = maxY - Math.random() * Math.min(h * 0.24, 160);
-    } else if (edge === 2) {
-      x = pad + Math.random() * Math.min(w * 0.22, 180);
-      y = pad + Math.random() * Math.max(1, maxY - pad);
-    } else {
-      x = maxX - Math.random() * Math.min(w * 0.24, 200);
-      y = pad + Math.random() * Math.max(1, maxY - pad);
-    }
-  }
-
-  x = Math.min(maxX, Math.max(pad, x));
-  y = Math.min(maxY, Math.max(pad, y));
-
-  if (
-    avoid &&
-    Math.hypot(x - avoid.x, y - avoid.y) <
-      Math.min(w, h) * (mobile ? 0.18 : 0.22)
-  ) {
-    return randomSpot(size, null);
-  }
-
   return {
-    x,
-    y,
-    rotation: (Math.random() * 10 - 5) * (mobile ? 0.7 : 1),
+    pad,
+    maxX: Math.max(pad, w - size - pad),
+    maxY: Math.max(pad, h - size - pad),
+    w,
+    h,
+    mobile: w < 768,
   };
+}
+
+function parkCorner(size: number): Spot {
+  const { maxX, maxY } = bounds(size);
+  return { x: maxX, y: maxY, rotation: 0 };
+}
+
+function clampSpot(x: number, y: number, rotation: number, size: number): Spot {
+  const { pad, maxX, maxY } = bounds(size);
+  return {
+    x: Math.min(maxX, Math.max(pad, x)),
+    y: Math.min(maxY, Math.max(pad, y)),
+    rotation,
+  };
+}
+
+/**
+ * Soft nearby target from current position — small drifts feel continuous,
+ * not teleporting across the viewport.
+ */
+function softNearbySpot(size: number, from: Spot, scrollDir: number): Spot {
+  const { mobile, w, h } = bounds(size);
+  const reach = mobile
+    ? Math.min(110, Math.min(w, h) * 0.18)
+    : Math.min(160, Math.min(w, h) * 0.16);
+
+  // Bias slightly with scroll direction so motion feels intentional
+  const biasY = scrollDir >= 0 ? reach * 0.25 : -reach * 0.25;
+  const dx = (Math.random() * 2 - 1) * reach;
+  const dy = (Math.random() * 2 - 1) * reach * 0.85 + biasY;
+  const rot =
+    from.rotation * 0.4 + (Math.random() * 6 - 3) * (mobile ? 0.6 : 1);
+
+  return clampSpot(from.x + dx, from.y + dy, rot, size);
 }
 
 export function AiAssistantButton() {
@@ -114,7 +99,7 @@ export function AiAssistantButton() {
     setBubbleSide(next);
   }, []);
 
-  // Random hops on scroll — not scrubbed to page height, no idle timer
+  // Smooth scroll-driven drifts (nearby targets + quickTo easing)
   useIsomorphicLayoutEffect(() => {
     const mover = moverRef.current;
     if (!mover) return;
@@ -122,54 +107,69 @@ export function AiAssistantButton() {
     const { gsap } = getGsap();
     const size = mascotSize();
 
-    const place = (spot: Spot, animate: boolean) => {
-      spotRef.current = spot;
-      applyBubbleSide(spot.x);
-      if (animate && !reducedMotion) {
-        gsap.to(mover, {
-          left: spot.x,
-          top: spot.y,
-          rotation: spot.rotation,
-          duration: 1.15 + Math.random() * 0.55,
-          ease: "power1.inOut",
-          overwrite: "auto",
-          onUpdate: () => {
-            applyBubbleSide(Number(gsap.getProperty(mover, "left")) || spot.x);
-          },
-        });
-      } else {
-        gsap.set(mover, {
-          left: spot.x,
-          top: spot.y,
-          rotation: reducedMotion ? 0 : spot.rotation,
-          x: 0,
-          y: 0,
-        });
-      }
-    };
-
     if (open || reducedMotion) {
       gsap.killTweensOf(mover);
-      place(parkCorner(size), false);
+      const park = parkCorner(size);
+      spotRef.current = park;
+      gsap.set(mover, {
+        left: park.x,
+        top: park.y,
+        rotation: 0,
+        x: 0,
+        y: 0,
+      });
+      applyBubbleSide(park.x);
       return;
     }
 
-    place(spotRef.current ?? parkCorner(size), false);
+    const start = spotRef.current ?? parkCorner(size);
+    spotRef.current = start;
+    gsap.set(mover, {
+      left: start.x,
+      top: start.y,
+      rotation: start.rotation,
+      x: 0,
+      y: 0,
+      force3D: true,
+    });
+    applyBubbleSide(start.x);
+
+    const xTo = gsap.quickTo(mover, "left", {
+      duration: 1.55,
+      ease: "power3.out",
+      onUpdate: () => {
+        applyBubbleSide(Number(gsap.getProperty(mover, "left")) || 0);
+      },
+    });
+    const yTo = gsap.quickTo(mover, "top", {
+      duration: 1.55,
+      ease: "power3.out",
+    });
+    const rTo = gsap.quickTo(mover, "rotation", {
+      duration: 1.8,
+      ease: "power2.out",
+    });
 
     let lastScrollY = window.scrollY;
     let travelled = 0;
-    const hopEveryPx = 140;
+    const driftEveryPx = 90;
 
-    const hop = (direction: number) => {
+    const drift = (direction: number) => {
       if (pausedRef.current) return;
-      place(randomSpot(mascotSize(), spotRef.current), true);
+      const current = spotRef.current ?? parkCorner(mascotSize());
+      const next = softNearbySpot(mascotSize(), current, direction);
+      spotRef.current = next;
+      xTo(next.x);
+      yTo(next.y);
+      rTo(next.rotation);
+
       if (!expressionLock.current && !interactiveRef.current) {
         setExpression(direction >= 0 ? "scroll" : "look");
         const exprId = window.setTimeout(() => {
           if (!interactiveRef.current && !expressionLock.current) {
             setExpression("idle");
           }
-        }, 380);
+        }, 420);
         timers.current.push(exprId);
       }
     };
@@ -183,29 +183,18 @@ export function AiAssistantButton() {
       const delta = y - lastScrollY;
       lastScrollY = y;
       travelled += Math.abs(delta);
-      if (travelled < hopEveryPx) return;
+      if (travelled < driftEveryPx) return;
       travelled = 0;
-      hop(delta);
+      drift(delta);
     };
 
     const onResize = () => {
       const sizeNow = mascotSize();
       const current = spotRef.current ?? parkCorner(sizeNow);
-      const pad = window.innerWidth < 640 ? 10 : 18;
-      place(
-        {
-          x: Math.min(
-            Math.max(pad, current.x),
-            window.innerWidth - sizeNow - pad,
-          ),
-          y: Math.min(
-            Math.max(pad, current.y),
-            window.innerHeight - sizeNow - pad,
-          ),
-          rotation: current.rotation,
-        },
-        false,
-      );
+      const next = clampSpot(current.x, current.y, current.rotation, sizeNow);
+      spotRef.current = next;
+      gsap.set(mover, { left: next.x, top: next.y, rotation: next.rotation });
+      applyBubbleSide(next.x);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });

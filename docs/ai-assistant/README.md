@@ -20,7 +20,7 @@ Structured data used by the app lives in `src/lib/ai/knowledge.ts` and should st
 | Primary specialty | Software development (full-stack focus) | Confirmed |
 | Practice | Multidisciplinary digital creator — software, UI/UX, graphic design, video | Confirmed |
 | Positioning | Can build a product and contribute to how it looks, feels, and communicates | Confirmed |
-| Email | hello@yafet.dev | Confirmed (site) |
+| Email | yafet.aklilu3@gmail.com | Confirmed (site) |
 | Site | https://yafet.dev | Confirmed (site) |
 | GitHub | https://github.com/Yafet-Aklilu | Confirmed (site) |
 | LinkedIn | https://www.linkedin.com/in/yafet-aklilu | Confirmed (site) |
@@ -196,7 +196,7 @@ The assistant represents Yafet’s professional presence but must not pretend to
 
 ### Contact fallback
 
-When information is missing: say so naturally and point to `hello@yafet.dev` (and socials when useful).
+When information is missing: say so naturally and point to `yafet.aklilu3@gmail.com` (and socials when useful).
 
 ---
 

@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ProjectModal } from "@/components/project/ProjectModal";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { CategoryEmpty } from "@/components/work/CategoryEmpty";
 import {
+  getProjectCover,
   softwareFocusFilters,
   type Project,
   type SoftwareFocus,
@@ -42,10 +44,13 @@ export function CategoryProjectList({
     return <CategoryEmpty category={category} />;
   }
 
+  const isCards = category.treatment === "cards";
+  const isGraphic = category.id === "graphic";
+
   return (
     <>
       {category.id === "software" ? (
-        <div className="mb-10 flex flex-wrap gap-3 border-t border-line pt-8">
+        <div className="mb-8 flex flex-wrap gap-3 border-t border-line pt-8">
           {softwareFocusFilters.map((filter) => (
             <button
               key={filter.id}
@@ -78,109 +83,106 @@ export function CategoryProjectList({
       ) : (
         <ul
           className={cn(
-            category.treatment === "list" &&
-              "divide-y divide-line border-y border-line",
-            category.treatment === "poster" && "grid gap-8 lg:grid-cols-2",
+            isCards &&
+              "grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4",
             category.treatment === "frames" && "grid gap-6 lg:grid-cols-3",
             category.treatment === "motion" && "grid gap-8 lg:grid-cols-2",
           )}
         >
-          {visible.map((project, index) => {
+          {visible.map((project) => {
             const openModal =
-              category.id === "software" || project.presentation === "modal";
+              category.id === "software" ||
+              category.id === "graphic" ||
+              project.presentation === "modal";
+            const cover = getProjectCover(project);
+            const blurb =
+              project.summary.trim() || "Project details coming soon.";
 
-            const body = (
-              <>
-                {project.images[0] ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={project.images[0].src}
-                    alt={project.images[0].alt}
-                    className={cn(
-                      "w-full border border-line bg-bg-elevated object-cover transition-opacity group-hover:opacity-90",
-                      category.treatment === "poster" && "aspect-[4/5]",
-                      category.treatment === "frames" && "aspect-[4/3]",
-                      category.treatment === "motion" && "aspect-video",
-                      category.treatment === "list" && "hidden",
-                    )}
-                  />
-                ) : category.treatment !== "list" ? (
-                  <div
-                    className={cn(
-                      "flex items-end border border-line bg-bg-elevated p-4",
-                      category.treatment === "poster" && "aspect-[4/5]",
-                      category.treatment === "frames" && "aspect-[4/3]",
-                      category.treatment === "motion" && "aspect-video",
-                    )}
-                  >
-                    <p className="text-label text-muted">No cover yet</p>
-                  </div>
-                ) : null}
-
-                <div
+            const body = isCards ? (
+              <div className="flex h-full flex-col overflow-hidden border border-line bg-bg-elevated transition-[border-color,opacity] duration-300 group-hover:border-ink group-focus-visible:border-ink">
+                <SafeImage
+                  src={cover?.src}
+                  alt={cover?.alt ?? `${project.name} cover`}
                   className={cn(
-                    category.treatment === "list"
-                      ? "grid gap-4 py-8 lg:grid-cols-12 lg:items-end lg:gap-8"
-                      : "mt-4",
+                    "w-full transition-opacity duration-300 group-hover:opacity-90",
+                    isGraphic
+                      ? "aspect-square object-cover"
+                      : "block h-auto",
                   )}
-                >
-                  {category.treatment === "list" ? (
-                    <p className="text-label text-muted lg:col-span-1">
-                      {String(index + 1).padStart(2, "0")}
-                    </p>
+                  fallbackClassName={cn(
+                    "w-full",
+                    isGraphic ? "aspect-square" : "aspect-[16/9]",
+                  )}
+                  fallbackLabel="Cover soon"
+                />
+                <div className="flex flex-1 flex-col gap-2 px-3 py-3 sm:px-3.5 sm:py-3.5">
+                  <h2 className="font-display text-base font-bold uppercase tracking-tight text-ink sm:text-lg">
+                    {project.name}
+                  </h2>
+                  <p className="line-clamp-3 text-[13px] leading-snug text-ink-muted">
+                    {blurb}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <SafeImage
+                  src={cover?.src}
+                  alt={cover?.alt ?? `${project.name} cover`}
+                  className={cn(
+                    "w-full border border-line bg-bg-elevated object-cover transition-opacity duration-300 group-hover:opacity-85 group-focus-visible:opacity-85",
+                    category.treatment === "frames" && "aspect-[4/3]",
+                    category.treatment === "motion" && "aspect-video",
+                  )}
+                  fallbackClassName={cn(
+                    "w-full",
+                    category.treatment === "frames" && "aspect-[4/3]",
+                    category.treatment === "motion" && "aspect-video",
+                  )}
+                  fallbackLabel="Cover coming soon"
+                />
+                <div className="mt-4">
+                  <p className="text-label text-muted">
+                    {projectMeta(project) || category.label}
+                  </p>
+                  <h2 className="text-title mt-3 text-2xl transition-opacity duration-300 group-hover:opacity-55 group-focus-visible:opacity-55 md:text-3xl lg:text-4xl">
+                    {project.name}
+                  </h2>
+                  <p className="mt-3 max-w-md text-sm text-ink-muted">{blurb}</p>
+                  {project.year.trim() ? (
+                    <p className="text-label mt-3 text-muted">{project.year}</p>
                   ) : null}
-                  <div
-                    className={cn(
-                      category.treatment === "list" && "lg:col-span-7",
-                    )}
-                  >
-                    <p className="text-label text-muted">
-                      {projectMeta(project)}
-                    </p>
-                    <h2 className="text-title mt-3 text-2xl transition-opacity group-hover:opacity-55 md:text-3xl lg:text-4xl">
-                      {project.name}
-                    </h2>
-                  </div>
-                  <div
-                    className={cn(
-                      category.treatment === "list" &&
-                        "flex items-end justify-between gap-4 lg:col-span-4 lg:justify-end",
-                    )}
-                  >
-                    <p className="mt-3 max-w-md text-sm text-ink-muted lg:mt-0 lg:text-right">
-                      {project.summary}
-                    </p>
-                    {category.treatment === "list" ? (
-                      <span className="text-label shrink-0 text-muted">
-                        {project.year}
-                      </span>
-                    ) : (
-                      <p className="text-label mt-3 text-muted">{project.year}</p>
-                    )}
-                  </div>
                 </div>
               </>
             );
 
+            const cardClass =
+              "group w-full text-left outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink";
+
             return (
-              <li key={project.id}>
+              <li key={project.id} className={isCards ? "min-w-0" : undefined}>
                 {openModal ? (
                   <button
                     type="button"
-                    className="group w-full text-left"
+                    className={cn(cardClass, isCards && "h-full")}
                     onClick={() => setActiveProject(project)}
+                    aria-haspopup="dialog"
                   >
                     {body}
                   </button>
                 ) : project.presentation === "page" ? (
-                  <Link href={`/work/${project.slug}`} className="group block">
+                  <Link
+                    href={`/work/${project.slug}`}
+                    className={cn(cardClass, "block", isCards && "h-full")}
+                  >
                     {body}
                   </Link>
                 ) : (
                   <button
                     type="button"
-                    className="group w-full text-left"
+                    className={cn(cardClass, isCards && "h-full")}
                     onClick={() => setActiveProject(project)}
+                    aria-haspopup="dialog"
                   >
                     {body}
                   </button>

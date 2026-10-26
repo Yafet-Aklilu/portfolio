@@ -6,6 +6,7 @@ import { checkRateLimit } from "@/lib/ai/rate-limit";
 import { retrieveContext } from "@/lib/ai/retrieve";
 import { validateAskInput } from "@/lib/ai/validate";
 import type { AssistantAskResult, AssistantMessage } from "@/lib/ai/types";
+import { site } from "@/lib/content";
 
 function trimHistory(
   history: AssistantMessage[] | undefined,
@@ -49,7 +50,7 @@ export async function askAssistant(
       ok: false,
       code: "not_configured",
       error:
-        "The portfolio assistant is temporarily unavailable. Please email hello@yafet.dev instead.",
+        `The portfolio assistant is temporarily unavailable. Please email ${site.email} instead.`,
     };
   }
 
@@ -68,7 +69,7 @@ export async function askAssistant(
       ok: false,
       code: "not_configured",
       error:
-        "The portfolio assistant is temporarily unavailable. Please email hello@yafet.dev instead.",
+        `The portfolio assistant is temporarily unavailable. Please email ${site.email} instead.`,
     };
   }
 
@@ -92,7 +93,7 @@ export async function askAssistant(
       ok: false,
       code: "provider_error",
       error:
-        "Something went wrong while answering. Please try again in a moment, or email hello@yafet.dev.",
+        `Something went wrong while answering. Please try again in a moment, or email ${site.email}.`,
     };
   }
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Container } from "@/components/layout/Container";
 import { navLinks, site, workCategories } from "@/lib/content";
 import { cn } from "@/lib/cn";
@@ -10,6 +11,11 @@ import { cn } from "@/lib/cn";
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -29,111 +35,141 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  return (
-    <header className="sticky top-0 z-50 border-b border-line bg-bg/90 backdrop-blur-sm">
-      <Container className="flex h-[var(--header-height)] items-center justify-between gap-8">
-        <Link
-          href="/"
-          className="group flex items-baseline gap-3"
-          aria-label={`${site.name} home`}
-        >
-          <span className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
-            {site.monogram}
-          </span>
-          <span className="text-label hidden text-ink-muted transition-colors group-hover:text-ink sm:inline">
-            {site.name}
-          </span>
-        </Link>
+  const mobileMenu =
+    mounted && open
+      ? createPortal(
+          <div
+            id="mobile-nav"
+            className="fixed inset-0 z-[90] flex flex-col bg-bg md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+          >
+            <div className="flex h-[var(--header-height)] shrink-0 items-center justify-between border-b border-line px-[var(--gutter)]">
+              <Link
+                href="/"
+                className="font-display text-xl font-bold uppercase tracking-tight text-ink"
+                onClick={() => setOpen(false)}
+              >
+                {site.monogram}
+              </Link>
+              <button
+                type="button"
+                className="text-label text-ink"
+                onClick={() => setOpen(false)}
+              >
+                Close
+              </button>
+            </div>
 
-        <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-8 lg:gap-10">
-            {navLinks.map((link) => {
-              const active =
-                link.href === "/work"
-                  ? pathname.startsWith("/work")
-                  : pathname === link.href;
-              return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={cn(
-                      "text-label transition-opacity hover:opacity-55",
-                      active ? "text-ink" : "text-ink-muted",
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        <button
-          type="button"
-          className="text-label text-ink md:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? "Close" : "Menu"}
-        </button>
-      </Container>
-
-      {open ? (
-        <div
-          id="mobile-nav"
-          className="border-t border-line bg-bg md:hidden"
-        >
-          <Container className="flex max-w-full flex-col gap-8 overflow-x-clip py-8">
-            <ul className="space-y-5">
-              <li>
-                <Link
-                  href="/"
-                  className="font-display text-3xl font-bold uppercase tracking-tight"
-                  onClick={() => setOpen(false)}
-                >
-                  Home
-                </Link>
-              </li>
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-display text-3xl font-bold uppercase tracking-tight"
-                    onClick={() => setOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div>
-              <p className="text-label text-muted">Categories</p>
-              <ul className="mt-4 space-y-3">
-                {workCategories.map((category) => (
-                  <li key={category.id}>
+            <div className="flex-1 overflow-y-auto overscroll-contain">
+              <Container className="flex max-w-full flex-col gap-8 overflow-x-clip py-8">
+                <ul className="space-y-5">
+                  <li>
                     <Link
-                      href={category.href}
-                      className="text-label text-ink transition-opacity hover:opacity-55"
+                      href="/"
+                      className="font-display text-3xl font-bold uppercase tracking-tight"
                       onClick={() => setOpen(false)}
                     >
-                      {category.title}
+                      Home
                     </Link>
                   </li>
-                ))}
-              </ul>
+                  {navLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="font-display text-3xl font-bold uppercase tracking-tight"
+                        onClick={() => setOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <div>
+                  <p className="text-label text-muted">Categories</p>
+                  <ul className="mt-4 space-y-3">
+                    {workCategories.map((category) => (
+                      <li key={category.id}>
+                        <Link
+                          href={category.href}
+                          className="text-label text-ink transition-opacity hover:opacity-55"
+                          onClick={() => setOpen(false)}
+                        >
+                          {category.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="text-label text-muted"
+                  onClick={() => setOpen(false)}
+                >
+                  {site.email}
+                </a>
+              </Container>
             </div>
-            <a
-              href={`mailto:${site.email}`}
-              className="text-label text-muted"
-              onClick={() => setOpen(false)}
-            >
-              {site.email}
-            </a>
-          </Container>
-        </div>
-      ) : null}
-    </header>
+          </div>,
+          document.body,
+        )
+      : null;
+
+  return (
+    <>
+      <header className="sticky top-0 z-50 border-b border-line bg-bg/90 backdrop-blur-sm">
+        <Container className="flex h-[var(--header-height)] items-center justify-between gap-8">
+          <Link
+            href="/"
+            className="group flex items-baseline gap-3"
+            aria-label={`${site.name} home`}
+          >
+            <span className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
+              {site.monogram}
+            </span>
+            <span className="text-label hidden text-ink-muted transition-colors group-hover:text-ink sm:inline">
+              {site.name}
+            </span>
+          </Link>
+
+          <nav aria-label="Primary" className="hidden md:block">
+            <ul className="flex items-center gap-8 lg:gap-10">
+              {navLinks.map((link) => {
+                const active =
+                  link.href === "/work"
+                    ? pathname.startsWith("/work")
+                    : pathname === link.href;
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "text-label transition-opacity hover:opacity-55",
+                        active ? "text-ink" : "text-ink-muted",
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <button
+            type="button"
+            className="text-label text-ink md:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? "Close" : "Menu"}
+          </button>
+        </Container>
+      </header>
+
+      {mobileMenu}
+    </>
   );
 }
