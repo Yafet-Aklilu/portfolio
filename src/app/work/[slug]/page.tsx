@@ -4,12 +4,8 @@ import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Container } from "@/components/layout/Container";
 import { PageEnter } from "@/components/motion/PageEnter";
-import {
-  findTechMark,
-  getProjectBySlug,
-  getPublishedProjects,
-  getWorkCategory,
-} from "@/lib/content";
+import { findTechMark, getWorkCategory } from "@/lib/content";
+import { getProjectBySlug, getPublishedProjects } from "@/lib/projects";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
@@ -17,8 +13,9 @@ type CaseStudyPageProps = {
 
 export const dynamicParams = true;
 
-export function generateStaticParams() {
-  return getPublishedProjects()
+export async function generateStaticParams() {
+  const projects = await getPublishedProjects();
+  return projects
     .filter((project) => project.presentation === "page")
     .map((project) => ({ slug: project.slug }));
 }
@@ -27,7 +24,7 @@ export async function generateMetadata({
   params,
 }: CaseStudyPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return { title: "Case study" };
   return {
     title: project.name,
@@ -37,7 +34,7 @@ export async function generateMetadata({
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
 
   if (!project || project.presentation !== "page") {
     notFound();

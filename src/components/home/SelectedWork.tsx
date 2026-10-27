@@ -7,12 +7,7 @@ import { Container } from "@/components/layout/Container";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import {
-  getFeaturedProjects,
-  homeCopy,
-  workCategories,
-  type Project,
-} from "@/lib/content";
+import { homeCopy, workCategories, type Project } from "@/lib/content";
 import { getGsap } from "@/lib/gsap";
 
 function FeaturedProjectRow({
@@ -97,11 +92,10 @@ function WorkEmptyState() {
   );
 }
 
-export function SelectedWork() {
+export function SelectedWork({ featured }: { featured: Project[] }) {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = usePrefersReducedMotion();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const featured = getFeaturedProjects();
 
   useIsomorphicLayoutEffect(() => {
     const root = rootRef.current;

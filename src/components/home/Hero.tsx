@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef } from "react";
+import { CvActions } from "@/components/cv/CvActions";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Container } from "@/components/layout/Container";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
@@ -196,6 +197,7 @@ export function Hero() {
               <ButtonLink href="/#contact" variant="line">
                 Contact
               </ButtonLink>
+              <CvActions variant="hero" />
             </div>
           </div>
         </div>

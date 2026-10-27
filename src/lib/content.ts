@@ -130,6 +130,39 @@ export const workCategories = [
 export type WorkCategoryId = (typeof workCategories)[number]["id"];
 export type WorkCategory = (typeof workCategories)[number];
 
+/** Role-specific CVs under /public/cv */
+export const cvs = [
+  {
+    id: "software",
+    label: "Software Engineering",
+    shortLabel: "Software",
+    href: "/cv/software.pdf",
+    categories: ["software"] as const satisfies readonly WorkCategoryId[],
+  },
+  {
+    id: "ui-ux",
+    label: "UI / UX Design",
+    shortLabel: "UI / UX",
+    href: "/cv/ui-ux.pdf",
+    categories: ["ui-ux"] as const satisfies readonly WorkCategoryId[],
+  },
+  {
+    id: "creative",
+    label: "Video & Graphics",
+    shortLabel: "Creative",
+    href: "/cv/creative.pdf",
+    categories: ["graphic", "video"] as const satisfies readonly WorkCategoryId[],
+  },
+] as const;
+
+export type CvItem = (typeof cvs)[number];
+
+export function getCvForCategory(categoryId: WorkCategoryId): CvItem | undefined {
+  return cvs.find((cv) =>
+    (cv.categories as readonly WorkCategoryId[]).includes(categoryId),
+  );
+}
+
 export type SoftwareFocus = "full-stack" | "mobile" | "ai-integration";
 
 export const softwareFocusFilters: {

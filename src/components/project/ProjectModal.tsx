@@ -411,7 +411,7 @@ export function ProjectModal({
               <section className="flex flex-wrap gap-3 border-t border-line pt-8">
                 {hasLive ? (
                   <ButtonLink href={project.liveUrl!} variant="solid" external>
-                    Live Preview
+                    Preview
                   </ButtonLink>
                 ) : null}
                 {hasGithub ? (

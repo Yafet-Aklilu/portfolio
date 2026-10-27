@@ -159,34 +159,51 @@ export function CategoryProjectList({
             const cardClass =
               "group w-full text-left outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink";
 
+            const previewUrl = project.liveUrl?.trim();
+            const showSoftwarePreview =
+              category.id === "software" && Boolean(previewUrl);
+
             return (
               <li key={project.id} className={isCards ? "min-w-0" : undefined}>
-                {openModal ? (
-                  <button
-                    type="button"
-                    className={cn(cardClass, isCards && "h-full")}
-                    onClick={() => setActiveProject(project)}
-                    aria-haspopup="dialog"
-                  >
-                    {body}
-                  </button>
-                ) : project.presentation === "page" ? (
-                  <Link
-                    href={`/work/${project.slug}`}
-                    className={cn(cardClass, "block", isCards && "h-full")}
-                  >
-                    {body}
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    className={cn(cardClass, isCards && "h-full")}
-                    onClick={() => setActiveProject(project)}
-                    aria-haspopup="dialog"
-                  >
-                    {body}
-                  </button>
-                )}
+                <div className={cn(isCards && "flex h-full flex-col gap-2")}>
+                  {openModal ? (
+                    <button
+                      type="button"
+                      className={cn(cardClass, isCards && "h-full flex-1")}
+                      onClick={() => setActiveProject(project)}
+                      aria-haspopup="dialog"
+                    >
+                      {body}
+                    </button>
+                  ) : project.presentation === "page" ? (
+                    <Link
+                      href={`/work/${project.slug}`}
+                      className={cn(cardClass, "block", isCards && "h-full flex-1")}
+                    >
+                      {body}
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      className={cn(cardClass, isCards && "h-full flex-1")}
+                      onClick={() => setActiveProject(project)}
+                      aria-haspopup="dialog"
+                    >
+                      {body}
+                    </button>
+                  )}
+                  {showSoftwarePreview ? (
+                    <a
+                      href={previewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-line w-full !px-3 !py-2 text-center"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      Preview
+                    </a>
+                  ) : null}
+                </div>
               </li>
             );
           })}

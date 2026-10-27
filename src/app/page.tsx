@@ -4,14 +4,20 @@ import { Hero } from "@/components/home/Hero";
 import { Intro } from "@/components/home/Intro";
 import { SelectedWork } from "@/components/home/SelectedWork";
 import { TechStrip } from "@/components/home/TechStrip";
+import { getPublishedProjects } from "@/lib/projects";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const projects = await getPublishedProjects();
+  const featured = projects.filter((project) => project.featured);
+
   return (
     <>
       <Hero />
       <Intro />
       <TechStrip />
-      <SelectedWork />
+      <SelectedWork featured={featured} />
       <Disciplines />
       <Contact />
     </>
