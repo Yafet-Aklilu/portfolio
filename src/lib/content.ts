@@ -1,14 +1,14 @@
 /**
  * Typed content model for the portfolio.
- * Only verified site identity + structural copy here.
- * Projects stay empty until real case content is added.
+ * Site identity, category copy, CVs, and tech strip live here.
+ * Project case content is managed in Supabase via /admin (see src/lib/projects.ts).
  */
 
 export const site = {
   name: "Yafet Aklilu",
   monogram: "YA",
   role: "Full stack developer & digital creative",
-  email: "yafet.aklilu3@gmail.com",
+  email: "yafet.aklilu0@gmail.com",
   url: "https://yafet.dev",
   headline:
     "I design and build digital products: full stack systems with interface, visual, and motion craft.",
@@ -102,7 +102,7 @@ export const workCategories = [
     href: "/work/ui-ux",
     description: "Interface design, systems, and product flows.",
     empty:
-      "Interface work will sit in framed studies: flows, systems, and UI crops. Composition is ready; projects publish when the assets are.",
+      "UI and UX case studies will appear here as interface work is ready to publish.",
     treatment: "frames" as const,
   },
   {
@@ -112,7 +112,7 @@ export const workCategories = [
     href: "/work/graphic",
     description: "Identity, visual systems, and graphic work.",
     empty:
-      "Graphic pieces will occupy poster scale slots. No filler artwork: only finished work when it is ready to show.",
+      "Graphic pieces will appear here when finished work is ready to show.",
     treatment: "cards" as const,
   },
   {
@@ -122,7 +122,7 @@ export const workCategories = [
     href: "/work/video",
     description: "Motion, edit, and visual storytelling.",
     empty:
-      "Motion work will use poster frames and intentional play: never autoplay backgrounds. Slots are held for lead cuts and supporting edits.",
+      "Motion and edit work will appear here when finished cuts are ready to show.",
     treatment: "motion" as const,
   },
 ] as const;
@@ -278,279 +278,10 @@ export const techStrip: TechStripItem[] = [
 ];
 
 /**
- * Software projects shown on /work/software.
- * Only confirmed facts below; TBD fields stay empty.
- * Covers live under public/images/projects/<slug>/cover.png (BekuGuide pending).
+ * Offline fallback only. Live project content is managed in Supabase via /admin
+ * and loaded through src/lib/projects.ts.
  */
-export const projects: Project[] = [
-  {
-    id: "delala",
-    slug: "delala",
-    name: "Delala",
-    year: "",
-    role: "Full stack development",
-    summary:
-      "Real estate rental product connecting owners and customers with less middleman friction.",
-    intro:
-      "A rental platform direction focused on clearer property discovery between owners and customers.",
-    overview:
-      "Delala targets the rental journey: owners manage properties and images, customers browse listings, and a read-only REST API backs the product. Broader product direction includes a modern frontend and AI-assisted discovery; that direction is not claimed as fully shipped.",
-    contribution: "",
-    features: [
-      "Property and property image models",
-      "Owner and customer roles",
-      "Read-only REST API",
-    ],
-    categories: ["software"],
-    softwareFocus: ["full-stack"],
-    technologies: ["Django", "Python", "REST API"],
-    cover: {
-      src: "/images/projects/delala/cover.png",
-      alt: "Delala project cover",
-    },
-    screenshots: [],
-    images: [],
-    hasMobileApp: false,
-    presentation: "modal",
-    featured: true,
-  },
-  {
-    id: "ourmoment",
-    slug: "ourmoment",
-    name: "OurMoment.one",
-    year: "",
-    role: "Full stack development",
-    summary:
-      "Personalized digital gifting: customize a moment, share a private link, collect reactions.",
-    intro:
-      "Personalized digital moments designed to be created, shared, and experienced through a private link.",
-    overview:
-      "Users choose a template, customize a moment, activate or publish it, and share a private link. Recipients can experience the moment and leave reactions. Production readiness of every feature is not confirmed yet.",
-    contribution: "",
-    features: [
-      "Template selection and moment customization",
-      "Activate or publish a moment",
-      "Private link sharing",
-      "Recipient experience with reactions",
-    ],
-    categories: ["software"],
-    softwareFocus: ["full-stack"],
-    technologies: ["Laravel", "Vue", "Inertia.js", "Tailwind CSS"],
-    cover: {
-      src: "/images/projects/ourmoment/cover.png",
-      alt: "OurMoment.one project cover",
-    },
-    screenshots: [],
-    images: [],
-    hasMobileApp: false,
-    presentation: "modal",
-    featured: true,
-  },
-  {
-    id: "gebeta",
-    slug: "gebeta",
-    name: "Gebeta.one",
-    year: "",
-    role: "",
-    summary: "Software product in the portfolio. Details to be completed.",
-    intro: "",
-    overview: "",
-    contribution: "",
-    features: [],
-    categories: ["software"],
-    softwareFocus: ["full-stack"],
-    technologies: [],
-    cover: {
-      src: "/images/projects/gebeta/cover.png",
-      alt: "Gebeta.one project cover",
-    },
-    screenshots: [],
-    images: [],
-    hasMobileApp: false,
-    presentation: "modal",
-    featured: true,
-  },
-  {
-    id: "bekuguide",
-    slug: "bekuguide",
-    name: "BekuGuide",
-    year: "",
-    role: "",
-    summary: "City discovery platform focused on Addis Ababa.",
-    intro:
-      "City discovery for Addis Ababa, presented at a high level until fuller case details are ready.",
-    overview:
-      "BekuGuide is a city discovery platform focused on Addis Ababa. Features, implementation specifics, current status, and links are still to be confirmed.",
-    contribution: "",
-    features: [],
-    categories: ["software"],
-    softwareFocus: ["full-stack"],
-    technologies: [],
-    // Cover pending: add public/images/projects/bekuguide/cover.png (or bekurguide/)
-    screenshots: [],
-    images: [],
-    hasMobileApp: false,
-    presentation: "modal",
-    featured: true,
-  },
-
-  // ---------------------------------------------------------------------------
-  // Graphic design — assets in public/images/graphics/
-  // Card previews use a 1:1 (1080×1080) frame. Replace placeholder copy anytime.
-  // ---------------------------------------------------------------------------
-  {
-    id: "graphic-logo-design",
-    slug: "logo-design",
-    name: "Logo Design",
-    year: "",
-    role: "Graphic design",
-    summary: "Placeholder description for this logo design. Replace with final copy.",
-    intro: "Placeholder intro for this logo design project.",
-    overview:
-      "Placeholder overview. Add the concept, audience, and design direction here when ready.",
-    contribution:
-      "Placeholder contribution notes. Describe your role and process here.",
-    categories: ["graphic"],
-    technologies: [],
-    cover: {
-      src: "/images/graphics/Logo-Design.PNG",
-      alt: "Logo Design",
-    },
-    screenshots: [],
-    images: [],
-    presentation: "modal",
-    featured: false,
-  },
-  {
-    id: "graphic-business-card",
-    slug: "business-card-design",
-    name: "Business Card Design",
-    year: "",
-    role: "Graphic design",
-    summary:
-      "Placeholder description for this business card design. Replace with final copy.",
-    intro: "Placeholder intro for this business card project.",
-    overview:
-      "Placeholder overview. Add layout intent, print details, and usage notes when ready.",
-    contribution:
-      "Placeholder contribution notes. Describe your role and process here.",
-    categories: ["graphic"],
-    technologies: [],
-    cover: {
-      src: "/images/graphics/Business-card-design.PNG",
-      alt: "Business card design",
-    },
-    screenshots: [],
-    images: [],
-    presentation: "modal",
-    featured: false,
-  },
-  {
-    id: "graphic-id-badge",
-    slug: "id-badge-design",
-    name: "ID Badge Design",
-    year: "",
-    role: "Graphic design",
-    summary: "Placeholder description for this ID badge design. Replace with final copy.",
-    intro: "Placeholder intro for this ID badge project.",
-    overview:
-      "Placeholder overview. Add hierarchy, branding constraints, and production notes when ready.",
-    contribution:
-      "Placeholder contribution notes. Describe your role and process here.",
-    categories: ["graphic"],
-    technologies: [],
-    cover: {
-      src: "/images/graphics/ID-badge-design.PNG",
-      alt: "ID badge design",
-    },
-    screenshots: [],
-    images: [],
-    presentation: "modal",
-    featured: false,
-  },
-  {
-    id: "graphic-brochure",
-    slug: "brochure-design",
-    name: "Brochure Design",
-    year: "",
-    role: "Graphic design",
-    summary: "Placeholder description for this brochure design. Replace with final copy.",
-    intro: "Placeholder intro for this brochure project.",
-    overview:
-      "Placeholder overview. Add fold format, messaging structure, and visual system notes when ready.",
-    contribution:
-      "Placeholder contribution notes. Describe your role and process here.",
-    categories: ["graphic"],
-    technologies: [],
-    cover: {
-      // Filename spelling: Brocher-design.JPG
-      src: "/images/graphics/Brocher-design.JPG",
-      alt: "Brochure design",
-    },
-    screenshots: [],
-    images: [],
-    presentation: "modal",
-    featured: false,
-  },
-  {
-    id: "graphic-rollup-banner",
-    slug: "roll-up-banner-design",
-    name: "Roll-up Banner Design",
-    year: "",
-    role: "Graphic design",
-    summary:
-      "Placeholder description for this roll-up banner design. Replace with final copy.",
-    intro: "Placeholder intro for this roll-up banner project.",
-    overview:
-      "Placeholder overview. Add event context, hierarchy, and print specs when ready.",
-    contribution:
-      "Placeholder contribution notes. Describe your role and process here.",
-    categories: ["graphic"],
-    technologies: [],
-    cover: {
-      src: "/images/graphics/Roll-up-banner-design.PNG",
-      alt: "Roll-up banner design",
-    },
-    screenshots: [],
-    images: [],
-    presentation: "modal",
-    featured: false,
-  },
-  {
-    id: "graphic-instagram-posts",
-    slug: "instagram-posts",
-    name: "Instagram Posts",
-    year: "",
-    role: "Graphic design",
-    summary:
-      "Placeholder description for these Instagram post designs. Replace with final copy.",
-    intro: "Placeholder intro for this Instagram posts collection.",
-    overview:
-      "Placeholder overview. Add campaign theme, formats, and posting intent when ready.",
-    contribution:
-      "Placeholder contribution notes. Describe your role and process here.",
-    categories: ["graphic"],
-    technologies: [],
-    cover: {
-      src: "/images/graphics/Instagram-post.PNG",
-      alt: "Instagram post design 1",
-    },
-    screenshots: [
-      {
-        // Filename spelling: Instagrm-post-design.PNG
-        src: "/images/graphics/Instagrm-post-design.PNG",
-        alt: "Instagram post design 2",
-      },
-      {
-        src: "/images/graphics/Instagram-post-3.png",
-        alt: "Instagram post design 3",
-      },
-    ],
-    images: [],
-    presentation: "modal",
-    featured: false,
-  },
-];
+export const projects: Project[] = [];
 
 export function getWorkCategory(id: string): WorkCategory | undefined {
   return workCategories.find((category) => category.id === id);

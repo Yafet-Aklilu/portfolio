@@ -20,7 +20,7 @@ Structured data used by the app lives in `src/lib/ai/knowledge.ts` and should st
 | Primary specialty | Software development (full-stack focus) | Confirmed |
 | Practice | Multidisciplinary digital creator — software, UI/UX, graphic design, video | Confirmed |
 | Positioning | Can build a product and contribute to how it looks, feels, and communicates | Confirmed |
-| Email | yafet.aklilu3@gmail.com | Confirmed (site) |
+| Email | yafet.aklilu0@gmail.com | Confirmed (site) |
 | Site | https://yafet.dev | Confirmed (site) |
 | GitHub | https://github.com/Yafet-Aklilu | Confirmed (site) |
 | LinkedIn | https://www.linkedin.com/in/yafet-aklilu | Confirmed (site) |
@@ -111,10 +111,19 @@ The assistant must not invent case studies, user counts, revenue, clients, or pr
 | Aspect | Content | Status |
 |--------|---------|--------|
 | Summary | City-discovery platform focused on Addis Ababa; part of the project portfolio | Confirmed (high-level) |
-| Features / stack / status / links | — | Unconfirmed — leave blank until real project information is added |
-| Live URL | — | TBD |
-| GitHub | — | TBD |
-| Contributions / outcomes | — | TBD |
+| Spelling | Correct name is **BekurGuide** (not BekuGuide) | Confirmed |
+| Live URL | https://bekurguide.com | Confirmed |
+| Graphic collateral | Business cards, ID badge, brochure, roll-up banner, Instagram posts in Graphic section | Confirmed (visible assets) |
+| GitHub / deep product claims | — | TBD — do not invent |
+
+### Gebeta
+
+| Aspect | Content | Status |
+|--------|---------|--------|
+| Summary | Business operating system connecting orders, POS, inventory, finance, staff, and analytics for hospitality and retail | Confirmed (from cover/landing positioning) |
+| Modules shown | Orders, POS, inventory, finance, analytics, waiter app | Confirmed (cover) |
+| Deployment positioning | Local network or cloud; multi-branch ready | Confirmed (cover) |
+| Live URL / clients / outcomes | — | TBD — do not invent |
 
 ### ORG-360
 
@@ -130,12 +139,12 @@ The assistant must not invent case studies, user counts, revenue, clients, or pr
 
 | Aspect | Content | Status |
 |--------|---------|--------|
+| Status | **Work in progress** — present clearly as unfinished | Confirmed |
 | Product concept | Personalized digital-gifting: choose a template, customize a moment, activate/publish, share a private link; recipients experience the moment and leave reactions | Confirmed (concept) |
 | Technical direction | Laravel, Vue, Inertia.js, Tailwind CSS | Confirmed as technical direction |
-| Production-ready claim | — | **Not** confirmed — do not claim features are production-ready |
-| Live URL | — | TBD |
-| GitHub | — | TBD |
-| Contributions / outcomes | — | TBD |
+| Live site attribution | Do **not** link or present ourmoment.one as Yafet’s deployed implementation | Confirmed constraint |
+| Production-ready claim | — | **Not** confirmed |
+| GitHub / contributions | — | TBD |
 
 ---
 
@@ -196,7 +205,7 @@ The assistant represents Yafet’s professional presence but must not pretend to
 
 ### Contact fallback
 
-When information is missing: say so naturally and point to `yafet.aklilu3@gmail.com` (and socials when useful).
+When information is missing: say so naturally and point to `yafet.aklilu0@gmail.com` (and socials when useful).
 
 ---
 
