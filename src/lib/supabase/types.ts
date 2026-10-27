@@ -34,6 +34,17 @@ export type ProjectRow = {
   updated_at?: string;
 };
 
+/** Ensure external links work even if https:// was omitted in admin. */
+export function normalizeExternalUrl(
+  value: string | null | undefined,
+): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) return undefined;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (trimmed.startsWith("/")) return trimmed;
+  return `https://${trimmed}`;
+}
+
 export function rowToProject(row: ProjectRow): Project {
   return {
     id: row.id,
@@ -54,8 +65,8 @@ export function rowToProject(row: ProjectRow): Project {
     images: row.images ?? [],
     hasMobileApp: row.has_mobile_app,
     mobileMockup: row.mobile_mockup ?? undefined,
-    liveUrl: row.live_url ?? undefined,
-    githubUrl: row.github_url ?? undefined,
+    liveUrl: normalizeExternalUrl(row.live_url),
+    githubUrl: normalizeExternalUrl(row.github_url),
     presentation: row.presentation ?? "modal",
     featured: row.featured,
     draft: row.draft,
@@ -85,8 +96,8 @@ export function projectToRow(
     images: project.images ?? [],
     has_mobile_app: Boolean(project.hasMobileApp),
     mobile_mockup: project.mobileMockup ?? null,
-    live_url: project.liveUrl?.trim() || null,
-    github_url: project.githubUrl?.trim() || null,
+    live_url: normalizeExternalUrl(project.liveUrl) ?? null,
+    github_url: normalizeExternalUrl(project.githubUrl) ?? null,
     presentation: project.presentation ?? "modal",
     featured: Boolean(project.featured),
     draft: Boolean(project.draft),
