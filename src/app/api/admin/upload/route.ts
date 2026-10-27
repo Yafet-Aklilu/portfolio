@@ -32,9 +32,13 @@ export async function POST(request: Request) {
     );
   }
 
-  if (file.size > 10 * 1024 * 1024) {
+  // Vercel hobby request body limit is ~4.5MB; keep headroom.
+  if (file.size > 4 * 1024 * 1024) {
     return NextResponse.json(
-      { error: "Image must be under 10MB." },
+      {
+        error:
+          "Image must be under 4MB after compression. Use a smaller file or paste a URL.",
+      },
       { status: 400 },
     );
   }

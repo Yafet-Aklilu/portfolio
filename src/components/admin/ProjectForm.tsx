@@ -10,6 +10,7 @@ import {
   type SoftwareFocus,
   type WorkCategoryId,
 } from "@/lib/content";
+import { compressImageForUpload, readUploadError } from "@/lib/compress-image";
 import { cn } from "@/lib/cn";
 
 type ProjectFormProps = {
@@ -116,14 +117,23 @@ export function ProjectForm({ mode, initial }: ProjectFormProps) {
   }
 
   async function uploadImage(file: File): Promise<ProjectImage> {
+    const compressed = await compressImageForUpload(file);
     const body = new FormData();
-    body.append("file", file);
+    body.append("file", compressed);
     const response = await fetch("/api/admin/upload", {
       method: "POST",
       body,
     });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Upload failed");
+    if (!response.ok) {
+      throw new Error(await readUploadError(response));
+    }
+    let data: { src?: string; alt?: string; error?: string };
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Upload failed: server returned an invalid response.");
+    }
+    if (!data.src) throw new Error(data.error || "Upload failed");
     return { src: data.src, alt: data.alt || file.name };
   }
 
@@ -507,6 +517,54 @@ export function ProjectForm({ mode, initial }: ProjectFormProps) {
               ))}
             </ul>
           ) : null}
+          <label className="mt-3 block space-y-2">
+            <span className="text-label text-muted">
+              Or paste screenshot URL and press Add
+            </span>
+            <div className="flex flex-wrap gap-2">
+              <input
+                id="screenshot-url"
+                className="min-w-[12rem] flex-1 border border-line bg-bg px-3 py-2"
+                placeholder="/images/projects/... or https://"
+                onKeyDown={(event) => {
+                  if (event.key !== "Enter") return;
+                  event.preventDefault();
+                  const input = event.currentTarget;
+                  const src = input.value.trim();
+                  if (!src) return;
+                  setForm((current) => ({
+                    ...current,
+                    screenshots: [
+                      ...current.screenshots,
+                      { src, alt: `${current.name || "Project"} screenshot` },
+                    ],
+                  }));
+                  input.value = "";
+                }}
+              />
+              <button
+                type="button"
+                className="btn btn-line !px-3 !py-2"
+                onClick={() => {
+                  const input = document.getElementById(
+                    "screenshot-url",
+                  ) as HTMLInputElement | null;
+                  const src = input?.value.trim();
+                  if (!src || !input) return;
+                  setForm((current) => ({
+                    ...current,
+                    screenshots: [
+                      ...current.screenshots,
+                      { src, alt: `${current.name || "Project"} screenshot` },
+                    ],
+                  }));
+                  input.value = "";
+                }}
+              >
+                Add
+              </button>
+            </div>
+          </label>
           <input
             type="file"
             accept="image/*"
@@ -515,6 +573,11 @@ export function ProjectForm({ mode, initial }: ProjectFormProps) {
             disabled={uploading}
             onChange={(event) => onScreenshotsChange(event.target.files)}
           />
+          <p className="mt-2 text-sm text-ink-subtle">
+            Large files are compressed automatically. Max ~4MB after
+            compression. File upload also needs SUPABASE_SERVICE_ROLE_KEY on
+            the server.
+          </p>
         </div>
       </section>
 
