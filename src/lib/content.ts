@@ -9,7 +9,7 @@ export const site = {
   monogram: "YA",
   role: "Full stack developer & digital creative",
   email: "yafet.aklilu0@gmail.com",
-  url: "https://yafet.dev",
+  url: "https://portfolio-blush-theta-asm9uz4bzh.vercel.app",
   headline:
     "I design and build digital products: full stack systems with interface, visual, and motion craft.",
   description:
@@ -23,7 +23,7 @@ export const site = {
     {
       id: "linkedin",
       label: "LinkedIn",
-      href: "https://www.linkedin.com/in/yafet-aklilu",
+      href: "https://www.linkedin.com/in/yafet-aklilu-559a3432b/",
     },
   ],
   resumeUrl: undefined as string | undefined,

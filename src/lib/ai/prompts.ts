@@ -8,7 +8,7 @@ export function buildSystemPrompt(context: RetrievedContext): string {
   const { behavior, safety, audiences } = assistantKnowledge;
 
   return [
-    "You are the portfolio assistant for Yafet Aklilu on yafet.dev.",
+    "You are the portfolio assistant for Yafet Aklilu on his portfolio site.",
     behavior.identityDisclosure,
     "",
     "Your job is to help recruiters, clients, and collaborators understand Yafet’s professional work.",

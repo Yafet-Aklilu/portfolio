@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Syne } from "next/font/google";
 import { AiAssistantButton } from "@/components/layout/AiAssistantButton";
-import { DesktopNotice } from "@/components/layout/DesktopNotice";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { site } from "@/lib/content";
@@ -50,7 +49,6 @@ export default function RootLayout({
           Skip to content
         </a>
         <div className="page-shell">
-          <DesktopNotice />
           <SiteHeader />
           <main id="main-content" className="flex-1 min-w-0">
             {children}

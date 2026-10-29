@@ -126,11 +126,39 @@ export const assistantKnowledge: AssistantKnowledge = {
         status: "confirmed",
       },
       knownFacts: [
+        "Correct spelling is BekurGuide",
         "City discovery focus on Addis Ababa",
-        "Included in the project portfolio at a high level",
+        "Live site: https://bekurguide.com",
+        "Supporting graphic collateral includes business cards, ID badge, brochure, roll-up, and Instagram posts",
       ],
       unconfirmedNotes: [
-        "Features, implementation specifics, current status, and links are unconfirmed",
+        "Do not invent unimplemented product features beyond verified portfolio materials",
+      ],
+      technologies: { value: [], status: "tbd" },
+      contributions: { value: null, status: "tbd" },
+      challenges: { value: null, status: "tbd" },
+      solutions: { value: null, status: "tbd" },
+      liveUrl: { value: "https://bekurguide.com", status: "confirmed" },
+      githubUrl: { value: null, status: "tbd" },
+      status: { value: null, status: "tbd" },
+      screenshots: { value: [], status: "tbd" },
+    },
+    {
+      id: "gebeta",
+      name: "Gebeta",
+      summary: {
+        value:
+          "A business operating system connecting orders, POS, inventory, finance, staff, and analytics for hospitality and retail.",
+        status: "confirmed",
+      },
+      knownFacts: [
+        "Positioned as a business operating system for restaurants, hotels, cafés, butcheries, and supermarkets",
+        "Modules shown include orders, POS, inventory, finance, analytics, and waiter app",
+        "Local network or cloud deployment direction",
+        "Multi-branch ready positioning",
+      ],
+      unconfirmedNotes: [
+        "Do not invent clients, revenue, or unverified implementation claims",
       ],
       technologies: { value: [], status: "tbd" },
       contributions: { value: null, status: "tbd" },
@@ -167,16 +195,19 @@ export const assistantKnowledge: AssistantKnowledge = {
       name: "OurMoment",
       summary: {
         value:
-          "A personalized digital gifting product: users choose a template, customize a moment, activate or publish it, share a private link, and recipients can experience the moment and leave reactions.",
+          "Work in progress. A personalized digital gifting product: users choose a template, customize a moment, activate or publish it, share a private link, and recipients can experience the moment and leave reactions.",
         status: "confirmed",
-        notes: "Concept confirmed; production readiness not confirmed.",
+        notes:
+          "In progress. Do not present ourmoment.one as Yafet’s deployed implementation.",
       },
       knownFacts: [
         "Personalized digital gifting product concept as described above",
         "Technical direction includes Laravel, Vue, Inertia.js, and Tailwind CSS",
+        "Portfolio entry is work in progress and is not linked to ourmoment.one",
       ],
       unconfirmedNotes: [
         "Do not claim features are production ready unless verified",
+        "Do not attribute the live ourmoment.one site to Yafet",
       ],
       technologies: {
         value: ["Laravel", "Vue", "Inertia.js", "Tailwind CSS"],

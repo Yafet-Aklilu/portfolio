@@ -21,9 +21,9 @@ Structured data used by the app lives in `src/lib/ai/knowledge.ts` and should st
 | Practice | Multidisciplinary digital creator — software, UI/UX, graphic design, video | Confirmed |
 | Positioning | Can build a product and contribute to how it looks, feels, and communicates | Confirmed |
 | Email | yafet.aklilu0@gmail.com | Confirmed (site) |
-| Site | https://yafet.dev | Confirmed (site) |
+| Site | https://portfolio-blush-theta-asm9uz4bzh.vercel.app | Confirmed (site) |
 | GitHub | https://github.com/Yafet-Aklilu | Confirmed (site) |
-| LinkedIn | https://www.linkedin.com/in/yafet-aklilu | Confirmed (site) |
+| LinkedIn | https://www.linkedin.com/in/yafet-aklilu-559a3432b/ | Confirmed (site) |
 | Resume / CV URL | — | TBD |
 | Location / timezone | — | TBD |
 | Availability wording | Open to remote employment and freelance; part-time remote is also relevant | Confirmed (goals) |
