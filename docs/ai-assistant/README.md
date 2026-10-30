@@ -112,9 +112,12 @@ The assistant must not invent case studies, user counts, revenue, clients, or pr
 |--------|---------|--------|
 | Summary | City-discovery platform focused on Addis Ababa; part of the project portfolio | Confirmed (high-level) |
 | Spelling | Correct name is **BekurGuide** (not BekuGuide) | Confirmed |
+| Yafet’s role | UI/UX Designer & Creative Contributor | Confirmed |
+| Contributions | UI/UX design, graphic design, promotional content, videography, and video editing | Confirmed |
 | Live URL | https://bekurguide.com | Confirmed |
 | Graphic collateral | Business cards, ID badge, brochure, roll-up banner, Instagram posts in Graphic section | Confirmed (visible assets) |
 | GitHub / deep product claims | — | TBD — do not invent |
+| Role framing | Do **not** describe Yafet’s role as full-stack | Confirmed constraint |
 
 ### Gebeta
 
@@ -123,6 +126,9 @@ The assistant must not invent case studies, user counts, revenue, clients, or pr
 | Summary | Business operating system connecting orders, POS, inventory, finance, staff, and analytics for hospitality and retail | Confirmed (from cover/landing positioning) |
 | Modules shown | Orders, POS, inventory, finance, analytics, waiter app | Confirmed (cover) |
 | Deployment positioning | Local network or cloud; multi-branch ready | Confirmed (cover) |
+| Yafet’s role | Mobile App Developer | Confirmed |
+| Contributions | Mobile application development | Confirmed |
+| Role framing | Do **not** describe Yafet’s role as full-stack | Confirmed constraint |
 | Live URL / clients / outcomes | — | TBD — do not invent |
 
 ### ORG-360
@@ -139,12 +145,14 @@ The assistant must not invent case studies, user counts, revenue, clients, or pr
 
 | Aspect | Content | Status |
 |--------|---------|--------|
-| Status | **Work in progress** — present clearly as unfinished | Confirmed |
+| Status | **Work in progress** — present clearly as unfinished; not a deployed product | Confirmed |
 | Product concept | Personalized digital-gifting: choose a template, customize a moment, activate/publish, share a private link; recipients experience the moment and leave reactions | Confirmed (concept) |
-| Technical direction | Laravel, Vue, Inertia.js, Tailwind CSS | Confirmed as technical direction |
+| Yafet’s role | Frontend Designer & Mobile App Developer | Confirmed |
+| Contributions | Interface design and mobile application development | Confirmed |
 | Live site attribution | Do **not** link or present ourmoment.one as Yafet’s deployed implementation | Confirmed constraint |
 | Production-ready claim | — | **Not** confirmed |
-| GitHub / contributions | — | TBD |
+| Role framing | Do **not** describe Yafet’s role as full-stack | Confirmed constraint |
+| GitHub | — | TBD |
 
 ---
 
