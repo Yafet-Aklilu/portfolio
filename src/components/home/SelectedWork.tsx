@@ -17,10 +17,7 @@ function FeaturedProjectRow({
   project: Project;
   index: number;
 }) {
-  const meta = [
-    project.softwareFocus?.[0]?.replace("-", " "),
-    ...project.categories,
-  ]
+  const meta = [project.role?.trim(), ...project.categories]
     .filter(Boolean)
     .join(" · ");
 
